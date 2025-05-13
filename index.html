@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiet Room - 静かな記録</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      padding: 2em;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 1em;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 1em;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: none;
+    }
+    button {
+      margin-top: 1em;
+      padding: 0.7em 2em;
+      font-size: 1em;
+      background-color: #7f8c8d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .response, .log, .history {
+      margin-top: 2em;
+      background-color: #ffffff;
+      padding: 1em;
+      border-left: 4px solid #95a5a6;
+      border-radius: 6px;
+    }
+    .dark-mode {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiet Room</h1>
+  <p>ここは、あなたの言葉をそっと置いていく場所です。</p>
+  <textarea id="input" placeholder="いま、心にあることを書いてみませんか？"></textarea>
+  <br>
+  <button onclick="respond()">そっと置く</button>
+  <button onclick="toggleDarkMode()">ZENモード</button>
+
+  <div class="response" id="response" style="display:none;"></div>
+  <div class="log" id="log" style="display:none;"></div>
+  <div class="history" id="history" style="display:none;"></div>
+
+  <script>
+    const replies = [
+      "うん、それでもいいよ。",
+      "大丈夫、それもあなたの一部だよ。",
+      "ちゃんと伝わってるよ。",
+      "ゆっくりでも、いいんだよ。",
+      "ここに書いてくれて、ありがとう。"
+    ];
+
+    const logs = [];
+
+    function respond() {
+      const text = document.getElementById("input").value.trim();
+      if (!text) return;
+      const responseText = replies[Math.floor(Math.random() * replies.length)];
+      const now = new Date().toLocaleString();
+
+      document.getElementById("response").innerHTML =
+        `<strong>Quiet Roomからの返事：</strong><br>${responseText}`;
+      document.getElementById("response").style.display = "block";
+
+      const logEntry = `<em>${now}</em><br>${text}`;
+      document.getElementById("log").innerHTML =
+        `<strong>今回の記録：</strong><br>${logEntry}`;
+      document.getElementById("log").style.display = "block";
+
+      logs.unshift(logEntry);
+      let allLogs = logs.map((entry, i) => `<div><strong>記録${logs.length - i}：</strong><br>${entry}</div><hr>`).join("");
+      document.getElementById("history").innerHTML = allLogs;
+      document.getElementById("history").style.display = "block";
+
+      document.getElementById("input").value = "";
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+  </script>
+</body>
+</html>
